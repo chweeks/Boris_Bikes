@@ -1,18 +1,25 @@
 class DockingStation
   def initialize
-    @bikes = 0
+    @bikes = []
+    @capacity = 20
   end
 
   def release_bike
-      if @bikes < 1
-        fail 'No bikes available'
-      else
-        @bikes -= 1
-        Bike.new
-      end
+    fail 'No bikes available' if @bikes.empty?
+    @bikes.pop
   end
 
   def dock(bike)
-    @bikes =+ 1
+    fail "Docking Station Full" if @bikes.length == @capacity
+    @bikes << bike
   end
+
+  def capacity
+    @capacity
+  end
+
+  def set_capacity(new_capacity)
+    new_capacity = @capacity
+  end
+  
 end
