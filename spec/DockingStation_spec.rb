@@ -7,20 +7,33 @@ describe DockingStation do
     it 'raises an error when there are no bikes available' do
       expect { subject.release_bike }.to raise_error 'No bikes available'
     end
+
+    it 'removes bike from docking station when released' do
+      bike = Bike.new
+      subject.dock(bike)
+      subject.release_bike
+      subject.instance_variable_get(:@bikes).length == 0
+    end
   end
 
-    describe '#dock(bike)' do
-   it 'raises an error when capacity is full' do
-        subject.capacity.times {subject.dock Bike.new}
-        expect { subject.dock Bike.new}.to raise_error 'Docking Station Full'
-      end
+  describe '#dock(bike)' do
+    it 'raises an error when capacity is full' do
+      subject.capacity.times {subject.dock Bike.new}
+      expect { subject.dock Bike.new}.to raise_error 'Docking Station Full'
     end
+
+    it 'adds bike to bikes when docked' do
+      bike = Bike.new
+      subject.dock(bike)
+      subject.instance_variable_get(:@bikes).length > 0
+    end
+  end
 
   it { is_expected.to respond_to(:dock).with(1).argument }
 
   it { is_expected.to respond_to :release_bike }
 
-    it { is_expected.to respond_to(:set_capacity).with(1).argument }
+  it { is_expected.to respond_to(:set_capacity).with(1).argument }
 
   it 'Creates bike' do
     bike = Bike.new
@@ -34,22 +47,9 @@ describe DockingStation do
     subject.dock(bike)
     bike = subject.release_bike
     expect(bike.working?).to be true
-    end
+  end
 
   it 'Docking Station starts empty' do
-    subject.instance_variable_get(:@bikes).length == 0
-  end
-
-  it 'adds bike to bikes when docked' do
-    bike = Bike.new
-    subject.dock(bike)
-    subject.instance_variable_get(:@bikes).length > 0
-  end
-
-  it 'removes bike from docking station when released' do
-    bike = Bike.new
-    subject.dock(bike)
-    subject.release_bike
     subject.instance_variable_get(:@bikes).length == 0
   end
 
@@ -57,5 +57,4 @@ describe DockingStation do
     subject.set_capacity(30)
     expect subject.instance_variable_get(:@capacity) == 30
   end
-
 end

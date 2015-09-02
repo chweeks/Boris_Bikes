@@ -1,4 +1,5 @@
 class DockingStation
+
   def initialize
     @bikes = []
     @capacity = 20
@@ -21,5 +22,5 @@ class DockingStation
   def set_capacity(new_capacity)
     new_capacity = @capacity
   end
-  
+
 end
