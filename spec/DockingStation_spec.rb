@@ -28,7 +28,7 @@ describe DockingStation do
   		subject.dock bike2
   		broken_bikes = subject.release_broken_bikes
   		expect(subject.bikes.select{|bike| bike.working? == false}).to eq broken_bikes
-  	end
+  end
 
   it { expect(subject).to respond_to :release_broken_bikes}
 
