@@ -22,12 +22,12 @@ describe DockingStation do
   end
 
   it "releases all the broken bikes to be collected by van" do
-      bike1 = double :bike, working?: true, class: Bike
-  		bike2 = double :bike, working?: false, class: Bike
-  		subject.dock bike1
-  		subject.dock bike2
-  		broken_bikes = subject.release_broken_bikes
-  		expect(subject.bikes.select{|bike| bike.working? == false}).to eq broken_bikes
+    bike1 = double :bike, working?: true, class: Bike
+    bike2 = double :bike, working?: false, class: Bike
+  	subject.dock bike1
+  	subject.dock bike2
+  	broken_bikes = subject.release_broken_bikes
+  	expect(subject.bikes.select{|bike| bike.working? == false}).to eq broken_bikes
   end
 
   it { expect(subject).to respond_to :release_broken_bikes}
