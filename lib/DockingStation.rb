@@ -1,26 +1,42 @@
 class DockingStation
 
+  DEFAULT_CAPACITY = 20
+  attr_accessor :capacity
+  attr_accessor :bikes
+
   def initialize
     @bikes = []
-    @capacity = 20
+    @capacity = DEFAULT_CAPACITY
   end
 
-  def release_bike
+  def release_bike(bike)
     fail 'No bikes available' if @bikes.empty?
-    @bikes.pop
+    fail "Bike is broken" if bike.working? == false
+    @bikes.delete bike
   end
 
   def dock(bike)
-    fail "Docking Station Full" if @bikes.length == @capacity
+    fail "Docking Station Full" if full?
+    fail "Not a bike" if bike.class != Bike
     @bikes << bike
   end
 
-  def capacity
-    @capacity
+	def release_broken_bikes
+		@bikes.select{|bike| bike.working? == false}
+	end
+
+	def remove_broken_bikes
+		@bikes.delete_if{|bike| bike.working? == false}
+	end
+
+  private
+
+  def full?
+    @bikes.count >= @capacity
   end
 
-  def set_capacity(new_capacity)
-    new_capacity = @capacity
+  def empty?
+    @bikes.empty?
   end
 
 end
