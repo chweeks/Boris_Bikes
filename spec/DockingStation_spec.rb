@@ -61,8 +61,10 @@ describe DockingStation do
     it { is_expected.to respond_to(:dock).with(1).argument }
 
     it 'raises an error when capacity is full' do
-      subject.capacity.times {subject.dock Bike.new}
-      expect { subject.dock Bike.new}.to raise_error 'Docking Station Full'
+      bike1 = double :bike, working?: true, class: Bike
+      bike2 = double :bike, working?: true, class: Bike
+      subject.capacity.times {subject.dock bike1}
+      expect { subject.dock bike2}.to raise_error 'Docking Station Full'
     end
 
     it "raises an error when not bike" do
@@ -70,7 +72,7 @@ describe DockingStation do
 		end
 
     it 'adds bike to bikes when docked' do
-      bike = Bike.new
+      bike = double :bike, working?: true, class: Bike
       subject.dock(bike)
       subject.instance_variable_get(:@bikes).length > 0
     end
