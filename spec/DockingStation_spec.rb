@@ -30,9 +30,9 @@ describe DockingStation do
   	expect(subject.bikes.select{|bike| bike.working? == false}).to eq broken_bikes
   end
 
-  it { expect(subject).to respond_to :release_broken_bikes}
+  it { is_expected.to respond_to :release_broken_bikes }
 
-  it { expect(subject).to respond_to :remove_broken_bikes}
+  it { is_expected.to respond_to :remove_broken_bikes }
 
   describe '#release_bike' do
 
@@ -64,7 +64,7 @@ describe DockingStation do
       bike1 = double :bike, working?: true, class: Bike
       bike2 = double :bike, working?: true, class: Bike
       subject.capacity.times {subject.dock bike1}
-      expect { subject.dock bike2}.to raise_error 'Docking Station Full'
+      expect { subject.dock bike2 }.to raise_error 'Docking Station Full'
     end
 
     it "raises an error when not bike" do

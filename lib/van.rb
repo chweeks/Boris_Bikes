@@ -11,6 +11,11 @@ class Van
     station.remove_broken_bikes
   end
 
+  def collect_working_bikes(garage)
+    @rack = garage.release_working_bikes(garage)
+    garage.remove_working_bikes
+  end
+
   def unload_broken_bikes
     @rack.select{|bike| bike.working? == false}
   end
