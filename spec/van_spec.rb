@@ -10,6 +10,8 @@ describe Van do
 
   it { is_expected.to respond_to :collect_working_bikes }
 
+  it { is_expected.to respond_to :unload_working_bikes }
+
   it "collects all broken bikes from station" do
     bike1 = double :bike, working?: true, class: Bike
 	  bike2 = double :bike, working?: false, class: Bike
@@ -52,5 +54,15 @@ describe Van do
     subject.rack << [:bike1, :bike2, :bike3]
     subject.remove_broken_bikes
     expect(subject.rack.empty?).to be true
+  end
+
+  it "gives all working bikes to station" do
+    bike1 = double :bike, working?: true
+	  bike2 = double :bike, working?: true
+    bike3 = double :bike, working?: false
+    subject.rack << bike1 << bike2 << bike3
+    station = DockingStation.new
+    subject.unload_working_bikes(station)
+    expect(station.bikes).to eql [bike1,bike2]
   end
 end

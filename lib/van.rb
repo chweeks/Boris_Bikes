@@ -24,4 +24,9 @@ class Van
     @rack.clear
   end
 
+  def unload_working_bikes(station)
+    station.recieve_working_bikes(self)
+    @rack.delete_if{ |bike| bike.working? == true}
+  end
+
 end

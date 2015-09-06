@@ -22,12 +22,16 @@ class DockingStation
   end
 
   def release_broken_bikes
-		@bikes.select{|bike| bike.working? == false}
+		@bikes.select{ |bike| bike.working? == false }
 	end
 
 	def remove_broken_bikes
-		@bikes.delete_if{|bike| bike.working? == false}
+		bikes.delete_if{ |bike| bike.working? == false }
 	end
+
+  def recieve_working_bikes(van)
+    van.rack.each{ |bike| bikes << bike if bike.working? == true }
+  end
 
   private
 
