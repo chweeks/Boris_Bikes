@@ -1,32 +1,45 @@
+require_relative 'bike_container'
+
 class Van
 
-  attr_accessor :rack
+  include BikeContainer
 
-  def initialize
-    @rack = []
+  def collect_working_bikes_from(giver)
+    giver.bike_rack.each do |bike|
+      bike_rack << bike if bike.working?
+    end
+    remove_working_bikes(giver)
   end
 
-  def collect_broken_bikes(station)
-    @rack = station.release_broken_bikes
-    station.remove_broken_bikes
+  def collect_broken_bikes_from(giver)
+    giver.bike_rack.each do |bike|
+      bike_rack << bike unless bike.working?
+    end
+    remove_broken_bikes(giver)
   end
 
-  def collect_working_bikes(garage)
-    @rack = garage.release_working_bikes(garage)
-    garage.remove_working_bikes
+  def unload_working_bikes_to(recipient)
+    bike_rack.each do |bike|
+      recipient.bike_rack << bike if bike.working?
+    end
+    remove_working_bikes(self)
   end
 
-  def unload_broken_bikes
-    @rack.select{|bike| bike.working? == false}
+  def unload_broken_bikes_to(recipient)
+    bike_rack.each do |bike|
+      recipient.bike_rack << bike unless bike.working?
+    end
+    remove_broken_bikes(self)
   end
 
-  def remove_broken_bikes
-    @rack.clear
+  private
+
+  def remove_broken_bikes(container)
+    container.bike_rack.delete_if { |bike| bike.working? == false }
   end
 
-  def unload_working_bikes(station)
-    station.recieve_working_bikes(self)
-    @rack.delete_if{ |bike| bike.working? == true}
+  def remove_working_bikes(container)
+    container.bike_rack.delete_if { |bike| bike.working? }
   end
 
 end

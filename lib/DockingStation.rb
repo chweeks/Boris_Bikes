@@ -1,46 +1,37 @@
+require_relative 'bike_container'
+
 class DockingStation
 
+  include BikeContainer
+
   DEFAULT_CAPACITY = 20
-  attr_accessor :capacity
-  attr_accessor :bikes
+  attr_reader :capacity
 
   def initialize
-    @bikes = []
+    super
     @capacity = DEFAULT_CAPACITY
   end
 
   def release_bike(bike)
-    fail 'No bikes available' if @bikes.empty?
+    fail 'No bikes available' if bike_rack.empty?
     fail "Bike is broken" if bike.working? == false
-    @bikes.delete bike
+    bike_rack.delete bike
   end
 
   def dock(bike)
     fail "Docking Station Full" if full?
     fail "Not a bike" if bike.class != Bike
-    @bikes << bike
-  end
-
-  def release_broken_bikes
-		@bikes.select{ |bike| bike.working? == false }
-	end
-
-	def remove_broken_bikes
-		bikes.delete_if{ |bike| bike.working? == false }
-	end
-
-  def recieve_working_bikes(van)
-    van.rack.each{ |bike| bikes << bike if bike.working? == true }
+    bike_rack << bike
   end
 
   private
 
   def full?
-    @bikes.count >= @capacity
+    bike_rack.count >= capacity
   end
 
   def empty?
-    @bikes.empty?
+    bike_rack.empty?
   end
 
 end
